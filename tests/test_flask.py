@@ -27,7 +27,7 @@ def test_create_client(client):
 
 def test_create_parking(client):
     """Создание парковки"""
-  
+
     parking_data = {'address': 'address',
                     'opened': True,
                     'count_places': 200}
@@ -123,7 +123,7 @@ def test_parking_out(client):
 
 def test_card(client):
     """Проверка карты клиента"""
-  
+
     client_data = {'name': 'name',
                    'surname': 'surname',
                    'credit_card': 'test_card'}
