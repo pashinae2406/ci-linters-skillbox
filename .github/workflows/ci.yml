@@ -83,4 +83,4 @@ jobs:
           pip install mypy
           
       - name: Run mypy
-        run: mypy --install-types .
+        run: mypy --install-types --check-untyped-defs .
