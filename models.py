@@ -1,6 +1,8 @@
 from typing import Dict, Any
+from flask_sqlalchemy import SQLAlchemy
 
-from main import db
+
+db = SQLAlchemy()
 
 
 class Client(db.Model):
