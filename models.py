@@ -41,8 +41,6 @@ class ClientParking(db.Model):
     __tablename__ = 'client_parking'
 
     id = db.Column(db.Integer, primary_key=True)
-    # client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
-    # parking_id = db.Column(db.Integer, db.ForeinKey('parking.id'))
     client_id = db.Column(db.Integer)
     parking_id = db.Column(db.Integer)
     time_in = db.Column(db.DateTime)
