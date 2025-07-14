@@ -137,7 +137,7 @@ def test_card(client):
     client_parking = client.post('/client_parkings', json=data_parking)
     time.sleep(3)
     if client_parking:
-      resp = client.delete('/client_parkings', json=data_parking)
+        resp = client.delete('/client_parkings', json=data_parking)
     assert resp.status_code == 404
     assert resp.text == (f'У клиента {client_data['name']} '
                          f'{client_data['surname']} не привязана '
