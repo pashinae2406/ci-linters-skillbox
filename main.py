@@ -106,9 +106,9 @@ def create_my_app():
                     Parking.address).filter(Parking.id == res_data[0]))
                 parking_client_address = parking_client.fetchone()[0]
                 db.session.close()
-                return (f'За клиентом {data_client.get('name')} 
-                {data_client.get('surname')} уже зарезервировано 
-                место на парковке по адресу {parking_client_address}')
+                return (f'За клиентом {data_client.get('name')} '
+                        f'{data_client.get('surname')} уже зарезервировано '
+                        f'место на парковке по адресу {parking_client_address}')
 
             elif data_parking['opened'] == 0:
                 return f'Парковка по адресу {data_parking['address']} закрыта.'
