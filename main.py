@@ -3,10 +3,7 @@ from flask import request
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 from datetime import datetime
-from models import Client, Parking, ClientParking
-
-
-db = SQLAlchemy()
+from models import db, Client, Parking, ClientParking
 
 
 def create_my_app():
