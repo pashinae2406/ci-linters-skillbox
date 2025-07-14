@@ -1,14 +1,12 @@
 from flask import Flask
 from flask import request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import select, update
-from typing import Any
+from sqlalchemy import select
 from datetime import datetime
+from models import Client, Parking, ClientParking
 
 
 db = SQLAlchemy()
-
-from models import Client, Parking, ClientParking
 
 def create_my_app():
     """Создание приложения"""
@@ -51,7 +49,6 @@ def create_my_app():
         else:
             return "Нет данных"
 
-
     @app.route('/clients/<client_id>', methods=['GET'])
     def get_client_id(client_id) -> dict:
         """Роут для получения страницы клиента"""
@@ -93,7 +90,7 @@ def create_my_app():
             ))
             data_client = client.fetchone()[0].to_json()
             res = db.session.execute(select(ClientParking.parking_id).filter(
-                ClientParking.client_id == data.get('client_id'), ClientParking.time_out == None))
+                ClientParking.client_id == data.get('client_id'), ClientParking.time_out is None))
             res_data = res.fetchone()
             if not res_data is None:
                 parking_client = db.session.execute(select(Parking.address).filter(
