@@ -4,7 +4,11 @@ import time
 from datetime import datetime
 
 
-@pytest.mark.parametrize("route", ["/clients", "/clients/1", "/count/1", "/client_parkings/1"])
+@pytest.mark.parametrize("route", 
+                         ["/clients", 
+                          "/clients/1", 
+                          "/count/1", 
+                          "/client_parkings/1"])
 def test_route_status(client, route):
     rv = client.get(route)
     assert rv.status_code == 200
@@ -40,7 +44,8 @@ def test_parking_in(client):
                     'opened': True,
                     'count_places': 150}
     parking_test = client.post('/parkings', json=parking_data)
-    count_available_start = int(json.loads(parking_test.text)['count_available_places'])
+    count_available_start = int(json.loads(
+        parking_test.text)['count_available_places'])
     data_parking = {'client_id': json.loads(client_test.text)['id'],
                     'parking_id': json.loads(parking_test.text)['id']}
     resp = client.post('/client_parkings', json=data_parking)
@@ -95,11 +100,13 @@ def test_parking_out(client):
     client_parking_out_date = datetime.strptime(
         json.loads(client_parking_out.text)['time_out'][5:-4], '%d %b %Y %H:%M:%S')
 
-    count_available_end = client.get(f'/count/{data_parking['parking_id']}')
+    count_available_end = client.get(
+        f'/count/{data_parking['parking_id']}')
     assert resp.status_code == 200
     assert resp.text == (f"Клиент {json.loads(client_test.text)['name']}"
                          f" {json.loads(client_test.text)['surname']} "
-                        f"покинул парковку по адресу {json.loads(parking_test.text)['address']}")
+                        f"покинул парковку по адресу "
+                         f"{json.loads(parking_test.text)['address']}")
     assert client_parking_out_date > client_parking_in_date
     assert json.loads(count_available_end.text)['count'] == count_available_start + 1
 
