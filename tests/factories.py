@@ -17,7 +17,7 @@ class ClientFactory(factory_boy.alchemy.SQLAlchemyModelFactory):
     car_number = fuzzy.FuzzyText(length=10)
 
 
-class ParkingFactory(factory.alchemy.SQLAlchemyModelFactory):
+class ParkingFactory(factory_boy.alchemy.SQLAlchemyModelFactory):
     class Meta:
         model = Parking
         sqlalchemy_session = db.session
