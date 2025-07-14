@@ -6,7 +6,7 @@ from main import db
 from models import Client, Parking
 
 
-class ClientFactory(factory.alchemy.SQLAlchemyModelFactory):
+class ClientFactory(factory_boy.alchemy.SQLAlchemyModelFactory):
     class Meta:
         model = Client
         sqlalchemy_session = db.session
