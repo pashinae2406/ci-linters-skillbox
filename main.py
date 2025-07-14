@@ -8,6 +8,7 @@ from models import Client, Parking, ClientParking
 
 db = SQLAlchemy()
 
+
 def create_my_app():
     """Создание приложения"""
 
@@ -38,11 +39,14 @@ def create_my_app():
 
         elif request.method == 'POST':
             data = request.json
-            client = Client(name=data.get('name'), surname=data.get('surname'),
-                            credit_card=data.get('credit_card'), car_number=data.get('car_number'))
+            client = Client(name=data.get('name'), 
+                            surname=data.get('surname'), 
+                            credit_card=data.get('credit_card'), 
+                            car_number=data.get('car_number'))
             db.session.add(client)
             db.session.commit()
-            result = db.session.execute(select(Client).filter(Client.id == client.id))
+            result = db.session.execute(select(Client).filter(
+                Client.id == client.id))
             db.session.close()
             return result.fetchone()[0].to_json(), 201
 
@@ -70,8 +74,10 @@ def create_my_app():
     @app.route('/parkings', methods=['POST'])
     def create_parking():
         data = request.json
-        parking = Parking(address=data.get('address'), opened=data.get('opened'),
-                        count_places=data.get('count_places'), count_available_places=data.get('count_places'))
+        parking = Parking(address=data.get('address'), 
+                          opened=data.get('opened'), 
+                          count_places=data.get('count_places'), 
+                          count_available_places=data.get('count_places'))
         db.session.add(parking)
         db.session.commit()
         result = db.session.execute(select(Parking).filter(Parking.id == parking.id))
@@ -82,15 +88,16 @@ def create_my_app():
     def client_parkings():
         if request.method == 'POST':
             data = request.json
-            parking = db.session.execute(select(Parking).
-                                         filter(Parking.id == data.get('parking_id')))
+            parking = db.session.execute(select(Parking).filter(
+                Parking.id == data.get('parking_id')))
             data_parking = parking.fetchone()[0].to_json()
             client = db.session.execute(select(Client).filter(
                 Client.id == data.get('client_id')
             ))
             data_client = client.fetchone()[0].to_json()
             res = db.session.execute(select(ClientParking.parking_id).filter(
-                ClientParking.client_id == data.get('client_id'), ClientParking.time_out is None))
+                ClientParking.client_id == data.get('client_id'), 
+                ClientParking.time_out is None))
             res_data = res.fetchone()
             if not res_data is None:
                 parking_client = db.session.execute(select(Parking.address).filter(
@@ -114,7 +121,8 @@ def create_my_app():
                 result = db.session.execute(select(ClientParking).filter(
                     ClientParking.id == client_parking_new.id
                 ))
-                db.session.query(Parking).filter(Parking.id == data.get('parking_id')).update(
+                db.session.query(Parking).filter(
+                    Parking.id == data.get('parking_id')).update(
                     {
                         Parking.count_available_places: Parking.count_available_places - 1
                     }
@@ -131,16 +139,19 @@ def create_my_app():
                 ClientParking.client_id == data.get('client_id'),
                 ClientParking.parking_id == data.get('parking_id')
             ))
-            client = db.session.execute(select(Client).filter(Client.id == data.get('client_id')))
+            client = db.session.execute(select(Client).filter(
+                Client.id == data.get('client_id')))
             client_data = client.fetchone()[0].to_json()
             if (client_data['credit_card'] == None) or (client_data['car_number'] == None):
                 return (f'У клиента {client_data['name']} {client_data['surname']} '
                         f'не привязана карта или указаны неверные данные.'), 404
-            parking = db.session.execute(select(Parking).filter(Parking.id == data.get('parking_id')))
+            parking = db.session.execute(select(Parking).filter(
+                Parking.id == data.get('parking_id')))
             parking_data = parking.fetchone()[0].to_json()
             parking_client_res = parking_client.fetchone()
             if parking_client_res:
-                db.session.query(ClientParking).filter(ClientParking.id == data.get('parking_id')).update(
+                db.session.query(ClientParking).filter(
+                    ClientParking.id == data.get('parking_id')).update(
                     {
                         ClientParking.time_out: datetime.now()
                     }
