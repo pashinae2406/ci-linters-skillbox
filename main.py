@@ -8,7 +8,7 @@ from datetime import datetime
 
 db = SQLAlchemy()
 
-from .models import Client, Parking, ClientParking
+from ci_linters_skillbox.models import Client, Parking, ClientParking
 
 def create_my_app():
     """Создание приложения"""
