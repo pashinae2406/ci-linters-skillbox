@@ -57,7 +57,8 @@ def create_my_app():
     def get_client_id(client_id) -> dict:
         """Роут для получения страницы клиента"""
 
-        result = db.session.execute(select(Client).filter(Client.id == client_id))
+        result = db.session.execute(select(Client).filter(
+            Client.id == client_id))
         client = result.fetchone()[0].to_json()
         db.session.close()
         return client
@@ -80,7 +81,8 @@ def create_my_app():
                           count_available_places=data.get('count_places'))
         db.session.add(parking)
         db.session.commit()
-        result = db.session.execute(select(Parking).filter(Parking.id == parking.id))
+        result = db.session.execute(select(Parking).filter(
+            Parking.id == parking.id))
         db.session.close()
         return result.fetchone()[0].to_json(), 201
 
@@ -100,13 +102,13 @@ def create_my_app():
                 ClientParking.time_out is None))
             res_data = res.fetchone()
             if not res_data is None:
-                parking_client = db.session.execute(select(Parking.address).filter(
-                    Parking.id == res_data[0]
-                ))
+                parking_client = db.session.execute(select(
+                    Parking.address).filter(Parking.id == res_data[0]))
                 parking_client_address = parking_client.fetchone()[0]
                 db.session.close()
-                return (f'За клиентом {data_client.get('name')} {data_client.get('surname')} уже '
-                        f'зарезервировано место на парковке по адресу {parking_client_address}')
+                return (f'За клиентом {data_client.get('name')} 
+                {data_client.get('surname')} уже зарезервировано 
+                место на парковке по адресу {parking_client_address}')
 
             elif data_parking['opened'] == 0:
                 return f'Парковка по адресу {data_parking['address']} закрыта.'
@@ -142,7 +144,7 @@ def create_my_app():
             client = db.session.execute(select(Client).filter(
                 Client.id == data.get('client_id')))
             client_data = client.fetchone()[0].to_json()
-            if (client_data['credit_card'] == None) or (client_data['car_number'] == None):
+            if (client_data['credit_card'] == None) or (client_data['car_number'] is None):
                 return (f'У клиента {client_data['name']} {client_data['surname']} '
                         f'не привязана карта или указаны неверные данные.'), 404
             parking = db.session.execute(select(Parking).filter(
@@ -156,7 +158,8 @@ def create_my_app():
                         ClientParking.time_out: datetime.now()
                     }
                 )
-                db.session.query(Parking).filter(Parking.id == data.get('parking_id')).update(
+                db.session.query(Parking).filter(
+                    Parking.id == data.get('parking_id')).update(
                     {
                         Parking.count_available_places: Parking.count_available_places + 1
                     }
