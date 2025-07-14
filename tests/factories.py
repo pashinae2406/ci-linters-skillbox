@@ -2,8 +2,8 @@ import factory
 import factory.fuzzy as fuzzy
 import random
 
-from .main import db
-from .models import Client, Parking
+from main import db
+from models import Client, Parking
 
 
 class ClientFactory(factory.alchemy.SQLAlchemyModelFactory):
