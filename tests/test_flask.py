@@ -24,9 +24,9 @@ def test_create_client(client):
     resp = client.post('/clients', json=client_data)
     assert resp.status_code == 201
 
+
 def test_create_parking(client):
     """Создание парковки"""
-
   
     parking_data = {'address': 'address',
                     'opened': True,
@@ -34,10 +34,10 @@ def test_create_parking(client):
     resp = client.post('/parkings', json=parking_data)
     assert resp.status_code == 201
 
+
 def test_parking_in(client):
     """Заезд на парковку"""
 
-  
     client_data = {'name': 'name',
                    'surname': 'surname',
                    'credit_card': 'test_card',
@@ -58,10 +58,10 @@ def test_parking_in(client):
     assert json.loads(
       count_available_end.text)['count'] == count_available_start - 1
 
+
 def test_parking_closed(client):
     """Проверка открыта/закрыта парковка"""
 
-  
     client_data = {'name': 'name',
                    'surname': 'surname',
                    'credit_card': 'test_card',
@@ -76,11 +76,11 @@ def test_parking_closed(client):
     resp = client.post('/client_parkings', json=data_parking)
 
     assert resp.text == (f'Парковка по адресу '
-                        f'{parking_data['address']} закрыта.')
+                         f'{parking_data['address']} закрыта.')
+
 
 def test_parking_out(client):
     """Выезд с парковки"""
-  
 
     client_data = {'name': 'name',
                    'surname': 'surname',
@@ -106,7 +106,7 @@ def test_parking_out(client):
     client_parking_out = client.get(
       f'/client_parkings/{client_parking_in['id']}')
     client_parking_out_date = datetime.strptime(
-        json.loads(client_parking_out.text)['time_out'][5:-4], 
+        json.loads(client_parking_out.text)['time_out'][5:-4],
         '%d %b %Y %H:%M:%S')
 
     count_available_end = client.get(
@@ -120,9 +120,9 @@ def test_parking_out(client):
     assert json.loads(
       count_available_end.text)['count'] == count_available_start + 1
 
+
 def test_card(client):
     """Проверка карты клиента"""
-
   
     client_data = {'name': 'name',
                    'surname': 'surname',
@@ -136,7 +136,8 @@ def test_card(client):
                     'parking_id': json.loads(parking_test.text)['id']}
     client_parking = client.post('/client_parkings', json=data_parking)
     time.sleep(3)
-    resp = client.delete('/client_parkings', json=data_parking)
+    if client_parking:
+      resp = client.delete('/client_parkings', json=data_parking)
     assert resp.status_code == 404
     assert resp.text == (f'У клиента {client_data['name']} '
                          f'{client_data['surname']} не привязана '
