@@ -39,10 +39,12 @@ def create_my_app():
 
         elif request.method == 'POST':
             data = request.json
-            client = Client(name=data.get('name'), 
-                            surname=data.get('surname'), 
-                            credit_card=data.get('credit_card'), 
-                            car_number=data.get('car_number'),)
+            client = Client(
+                name=data.get('name'), 
+                surname=data.get('surname'), 
+                credit_card=data.get('credit_card'),
+                car_number=data.get('car_number')
+            )
             db.session.add(client)
             db.session.commit()
             result = db.session.execute(select(Client).filter(
