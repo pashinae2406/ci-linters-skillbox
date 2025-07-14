@@ -114,8 +114,8 @@ def create_my_app():
             elif data_parking['opened'] == 0:
                 return f'Парковка по адресу {data_parking['address']} закрыта.'
 
-            elif (data_parking['opened'] == 1) and (
-                data_parking['count_available_places'] > 0):
+            elif ((data_parking['opened'] == 1) and (
+                data_parking['count_available_places'] > 0)):
 
                 client_parking_new = ClientParking(
                     client_id=data.get('client_id'), 
@@ -148,8 +148,8 @@ def create_my_app():
             client = db.session.execute(select(Client).filter(
                 Client.id == data.get('client_id')))
             client_data = client.fetchone()[0].to_json()
-            if (client_data['credit_card'] is None) or (
-                client_data['car_number'] is None):
+            if ((client_data['credit_card'] is None) or (
+                client_data['car_number'] is None)):
                 return (f'У клиента {client_data['name']} '
                         f'{client_data['surname']} не привязана '
                         f'карта или указаны неверные данные.'), 404
