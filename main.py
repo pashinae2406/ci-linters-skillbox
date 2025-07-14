@@ -40,8 +40,8 @@ def create_my_app():
         elif request.method == 'POST':
             data = request.json
             client = Client(
-                name=data.get('name'), 
-                surname=data.get('surname'), 
+                name=data.get('name'),
+                surname=data.get('surname'),
                 credit_card=data.get('credit_card'),
                 car_number=data.get('car_number')
             )
@@ -77,9 +77,9 @@ def create_my_app():
     @app.route('/parkings', methods=['POST'])
     def create_parking():
         data = request.json
-        parking = Parking(address=data.get('address'), 
-                          opened=data.get('opened'), 
-                          count_places=data.get('count_places'), 
+        parking = Parking(address=data.get('address'),
+                          opened=data.get('opened'),
+                          count_places=data.get('count_places'),
                           count_available_places=data.get('count_places'),)
         db.session.add(parking)
         db.session.commit()
@@ -100,7 +100,7 @@ def create_my_app():
             ))
             data_client = client.fetchone()[0].to_json()
             res = db.session.execute(select(ClientParking.parking_id).filter(
-                ClientParking.client_id == data.get('client_id'), 
+                ClientParking.client_id == data.get('client_id'),
                 ClientParking.time_out is None))
             res_data = res.fetchone()
             if res_data is not None:
@@ -116,12 +116,12 @@ def create_my_app():
             elif data_parking['opened'] == 0:
                 return f'Парковка по адресу {data_parking['address']} закрыта.'
 
-            elif ((data_parking['opened'] == 1) 
+            elif ((data_parking['opened'] == 1)
                   and (data_parking['count_available_places'] > 0)):
 
                 client_parking_new = ClientParking(
-                    client_id=data.get('client_id'), 
-                    parking_id=data.get('parking_id'), 
+                    client_id=data.get('client_id'),
+                    parking_id=data.get('parking_id'),
                     time_in=datetime.now())
                 db.session.add(client_parking_new)
                 db.session.commit()
@@ -131,7 +131,7 @@ def create_my_app():
                 db.session.query(Parking).filter(
                     Parking.id == data.get('parking_id')).update(
                     {
-                        Parking.count_available_places: 
+                        Parking.count_available_places:
                         Parking.count_available_places - 1
                     }
                 )
@@ -150,7 +150,7 @@ def create_my_app():
             client = db.session.execute(select(Client).filter(
                 Client.id == data.get('client_id')))
             client_data = client.fetchone()[0].to_json()
-            if ((client_data['credit_card'] is None) 
+            if ((client_data['credit_card'] is None)
                     or (client_data['car_number'] is None)):
                 return (f'У клиента {client_data['name']} '
                         f'{client_data['surname']} не привязана '
@@ -169,7 +169,7 @@ def create_my_app():
                 db.session.query(Parking).filter(
                     Parking.id == data.get('parking_id')).update(
                     {
-                        Parking.count_available_places: 
+                        Parking.count_available_places:
                         Parking.count_available_places + 1
                     }
                 )
