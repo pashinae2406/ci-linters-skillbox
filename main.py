@@ -114,8 +114,8 @@ def create_my_app():
             elif data_parking['opened'] == 0:
                 return f'Парковка по адресу {data_parking['address']} закрыта.'
 
-            elif ((data_parking['opened'] == 1) and (
-                data_parking['count_available_places'] > 0)):
+            elif ((data_parking['opened'] == 1) 
+                  and (data_parking['count_available_places'] > 0)):
 
                 client_parking_new = ClientParking(
                     client_id=data.get('client_id'), 
