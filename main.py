@@ -148,8 +148,8 @@ def create_my_app():
             client = db.session.execute(select(Client).filter(
                 Client.id == data.get('client_id')))
             client_data = client.fetchone()[0].to_json()
-            if ((client_data['credit_card'] == None) 
-                    or (client_data['car_number'] == None)):
+            if ((client_data['credit_card'] is None) 
+                    or (client_data['car_number'] is None)):
                 return (f'У клиента {client_data['name']} '
                         f'{client_data['surname']} не привязана '
                         f'карта или указаны неверные данные.'), 404
