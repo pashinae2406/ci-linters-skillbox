@@ -1,0 +1,5 @@
+mypy>=1.0
+sqlalchemy2-stubs>=0.5
+types-pytest>=7.0
+types-Flask>=2.0
+factory-boy-stubs>=3.2
